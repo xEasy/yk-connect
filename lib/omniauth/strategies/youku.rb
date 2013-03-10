@@ -5,7 +5,7 @@ require 'omniauth/strategies/oauth2'
 module OmniAuth
   module Strategies
     class Youku < OmniAuth::Strategies::OAuth2
-      option :name, "youku"
+      option :name, "Youku"
 
       option :client_options, {
         :site => 'https://openapi.youku.com/v2/',
@@ -52,4 +52,4 @@ module OmniAuth
   end
 end
 
-OmniAuth.config.add_camelization('qq_connect', 'QQConnect')
+OmniAuth.config.add_camelization('youku', 'Youku')
