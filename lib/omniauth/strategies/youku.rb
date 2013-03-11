@@ -9,8 +9,8 @@ module OmniAuth
 
       option :client_options, {
         :site => 'https://openapi.youku.com/v2/',
-        :authorize_url => '/oauth2/authorize',
-        :token_url => "/oauth2/token"
+        :authorize_url => '/v2/oauth2/authorize',
+        :token_url => "/v2/oauth2/token"
       }
 
       option :token_params, {
