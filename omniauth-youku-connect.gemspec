@@ -16,5 +16,6 @@ Gem::Specification.new do |gem|
   gem.version       = Omniauth::Youku::Connect::VERSION
 
   gem.add_dependency 'omniauth', '~> 1.0'
+  gem.add_dependency 'restclient'
   gem.add_dependency 'omniauth-oauth2', '~> 1.0'
 end

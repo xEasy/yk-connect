@@ -1,5 +1,4 @@
 # encoding: utf-8
-
 require 'omniauth/strategies/oauth2'
 
 module OmniAuth
@@ -8,44 +7,33 @@ module OmniAuth
       option :name, "Youku"
 
       option :client_options, {
-        :site => 'https://openapi.youku.com/v2/',
-        :authorize_url => '/v2/oauth2/authorize',
-        :token_url => "/v2/oauth2/token"
+        :site => 'https://openapi.youku.com/',
+        :authorize_url => 'https://openapi.youku.com/v2/oauth2/authorize',
+        :token_url => "https://openapi.youku.com/v2/oauth2/token"
       }
 
-      option :token_params, {
-        :state => 'foobar',
-        :parse => :query
-      }
-
-      option :authorize_options, [:scope]
-
-      uid do
-        @uid ||= begin
-          access_token.options[:mode] = :query
-          access_token.options[:param_name] = :access_token
-          response = access_token.get('/users/myinfo')
-          matched = response.body.match(/"id":"(\w+)"/)
-          matched[:id]
-        end
+      uid do 
+        raw_info['id']
       end
 
       info do
-        {
-          :name => raw_info['name'],
-          :image => raw_info['avatar'],
-        }
+        raw_info
       end
 
-      extra do
+      def signed_params
         {
-          :raw_info => raw_info
+          'client_id' => client.id,
+          'access_token' => access_token.token,
         }
       end
 
       def raw_info
         @raw_info ||= begin
-          access_token.get('/users/myinfo', :parse => :json).parsed
+          body = RestClient.post('https://openapi.youku.com/v2/users/myinfo.json', {
+            "client_id" => client.id,
+            'access_token' => access_token.token
+          })
+          MultiJson.load(body)
         end
       end
     end
